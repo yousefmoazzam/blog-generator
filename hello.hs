@@ -26,6 +26,12 @@ h1_ = el "h1"
 el :: String -> String -> String
 el tag content = "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
 
+render :: Html -> String
+render (Html str) = str
+
+append_ :: Structure -> Structure -> Structure
+append_ (Structure str1) (Structure str2) = Structure (str1 <> str2)
+
 -- Types
 newtype Html = Html String
 
