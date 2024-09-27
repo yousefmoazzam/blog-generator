@@ -3,19 +3,10 @@ main = putStrLn myhtml
 myhtml = makeHtml "My page title" "Some header" "Hello, world!"
 
 makeHtml :: String -> String -> String -> String
-makeHtml title header paragraph = html_ (head_ (title_ title) <> body_ (h1_ header <> p_ paragraph))
+makeHtml title header paragraph = html_ (el "head" (el "title" title) <> el "body" (h1_ header <> p_ paragraph))
 
 html_ :: String -> String
 html_ = el "html"
-
-body_ :: String -> String
-body_ = el "body"
-
-head_ :: String -> String
-head_ = el "head"
-
-title_ :: String -> String
-title_ = el "title"
 
 p_ :: String -> String
 p_ = el "p"
