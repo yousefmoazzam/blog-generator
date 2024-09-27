@@ -25,3 +25,10 @@ h1_ = el "h1"
 
 el :: String -> String -> String
 el tag content = "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
+
+-- Types
+newtype Html = Html String
+
+newtype Structure = Structure String
+
+type Title = String
