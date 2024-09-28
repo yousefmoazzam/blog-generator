@@ -23,6 +23,9 @@ render (Html str) = str
 append_ :: Structure -> Structure -> Structure
 append_ (Structure str1) (Structure str2) = Structure (str1 <> str2)
 
+getStructureString :: Structure -> String
+getStructureString (Structure str) = str
+
 -- Types
 newtype Html = Html String
 
