@@ -19,10 +19,13 @@ myhtml =
 html_ :: Title -> Structure -> Html
 html_ title bodyStructure =
   Html
-    ( getStructureString
-        ( append_
-            (Structure (el "head" (el "title" title)))
-            bodyStructure
+    ( el
+        "html"
+        ( getStructureString
+            ( append_
+                (Structure (el "head" (el "title" title)))
+                bodyStructure
+            )
         )
     )
 
