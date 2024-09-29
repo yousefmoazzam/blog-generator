@@ -8,11 +8,11 @@ makeHtml title header paragraph = html_ (el "head" (el "title" title) <> el "bod
 html_ :: String -> String
 html_ = el "html"
 
-p_ :: String -> String
-p_ = el "p"
+p_ :: String -> Structure
+p_ = Structure . el "p"
 
-h1_ :: String -> String
-h1_ = el "h1"
+h1_ :: String -> Structure
+h1_ = Structure . el "h1"
 
 el :: String -> String -> String
 el tag content = "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
