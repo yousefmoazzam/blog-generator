@@ -1,12 +1,31 @@
 main = putStrLn myhtml
 
-myhtml = makeHtml "My page title" "Some header" "Hello, world!"
+myhtml =
+  render
+    ( html_
+        "My page title"
+        ( Structure
+            ( el
+                "body"
+                ( getStructureString
+                    ( append_
+                        (h1_ "Some header")
+                        (append_ (p_ "Paragraph 1: Hello, world!") (p_ "Paragraph 2: Some other thing"))
+                    )
+                )
+            )
+        )
+    )
 
-makeHtml :: String -> String -> String -> String
-makeHtml title header paragraph = html_ (el "head" (el "title" title) <> el "body" (h1_ header <> p_ paragraph))
-
-html_ :: String -> String
-html_ = el "html"
+html_ :: Title -> Structure -> Html
+html_ title bodyStructure =
+  Html
+    ( getStructureString
+        ( append_
+            (Structure (el "head" (el "title" title)))
+            bodyStructure
+        )
+    )
 
 p_ :: String -> Structure
 p_ = Structure . el "p"
