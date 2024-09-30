@@ -21,12 +21,7 @@ html_ title bodyStructure =
   Html
     ( el
         "html"
-        ( getStructureString
-            ( append_
-                (Structure (el "head" (el "title" title)))
-                bodyStructure
-            )
-        )
+        (el "head" (el "title" title) <> getStructureString bodyStructure)
     )
 
 p_ :: String -> Structure
