@@ -32,6 +32,9 @@ li_ = Structure . el "li" . getStructureString
 p_ :: String -> Structure
 p_ = Structure . el "p" . escape
 
+code_ :: String -> Structure
+code_ = Structure . el "pre" . escape
+
 h1_ :: String -> Structure
 h1_ = Structure . el "h1" . escape
 
