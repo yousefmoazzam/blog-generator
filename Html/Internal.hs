@@ -21,6 +21,11 @@ ul_ items =
   let wrappedItems = map li_ items
    in Structure (el "ul" (concatMap getStructureString wrappedItems))
 
+ol_ :: [Structure] -> Structure
+ol_ items =
+  let wrappedItems = map li_ items
+   in Structure (el "ol" (concatMap getStructureString wrappedItems))
+
 li_ :: Structure -> Structure
 li_ = Structure . el "li" . getStructureString
 
