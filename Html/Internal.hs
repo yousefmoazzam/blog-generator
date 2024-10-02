@@ -16,6 +16,14 @@ html_ title bodyStructure =
         )
     )
 
+ul_ :: [Structure] -> Structure
+ul_ items =
+  let wrappedItems = map li_ items
+   in Structure (el "ul" (concatMap getStructureString wrappedItems))
+
+li_ :: Structure -> Structure
+li_ = Structure . el "li" . getStructureString
+
 p_ :: String -> Structure
 p_ = Structure . el "p" . escape
 
