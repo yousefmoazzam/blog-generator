@@ -4,6 +4,9 @@ newtype Html = Html String
 
 newtype Structure = Structure String
 
+instance Semigroup Structure where
+  (Structure a) <> (Structure b) = Structure (a <> b)
+
 type Title = String
 
 html_ :: Title -> Structure -> Html
@@ -37,9 +40,6 @@ code_ = Structure . el "pre" . escape
 
 h1_ :: String -> Structure
 h1_ = Structure . el "h1" . escape
-
-append_ :: Structure -> Structure -> Structure
-append_ (Structure str1) (Structure str2) = Structure (str1 <> str2)
 
 render :: Html -> String
 render (Html str) = str
