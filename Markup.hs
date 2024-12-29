@@ -42,6 +42,12 @@ parseLines context txts =
         Just (OrderedList list) ->
           parseLines (Just (OrderedList (list <> [trim line]))) rest
         _ -> maybe id (:) context (parseLines (Just (OrderedList [trim line])) rest)
+    -- Code block case
+    ('>' : ' ' : line) : rest ->
+      case context of
+        Just (CodeBlock lines) ->
+          parseLines (Just (CodeBlock (lines ++ [trim line]))) rest
+        _ -> maybe id (:) context (parseLines (Just (CodeBlock [trim line])) rest)
     -- Paragraph case
     currentLine : rest ->
       let line = trim currentLine
