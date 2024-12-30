@@ -1,5 +1,7 @@
 module Html.Internal where
 
+import GHC.Natural (Natural)
+
 newtype Html = Html String
 
 newtype Structure = Structure String
@@ -40,6 +42,9 @@ code_ = Structure . el "pre" . escape
 
 h1_ :: String -> Structure
 h1_ = Structure . el "h1" . escape
+
+h_ :: Natural -> String -> Structure
+h_ num = Structure . el ("h" <> show num) . escape
 
 render :: Html -> String
 render (Html str) = str
