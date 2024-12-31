@@ -9,6 +9,9 @@ newtype Structure = Structure String
 instance Semigroup Structure where
   (Structure a) <> (Structure b) = Structure (a <> b)
 
+instance Monoid Structure where
+  mempty = empty_
+
 type Title = String
 
 html_ :: Title -> Structure -> Html
@@ -54,12 +57,6 @@ el tag content = "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
 
 getStructureString :: Structure -> String
 getStructureString (Structure str) = str
-
-concatStructures :: [Structure] -> Structure
-concatStructures [] = empty_
-concatStructures [first] = first
-concatStructures (first : second : rest) =
-  (first <> second) <> concatStructures rest
 
 escape :: String -> String
 escape =
