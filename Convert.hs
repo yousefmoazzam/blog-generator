@@ -3,6 +3,9 @@ module Convert where
 import qualified Html
 import qualified Markup
 
+convert :: String -> Markup.Document -> Html.Html
+convert title doc = Html.html_ title (foldMap convertStructure doc)
+
 convertStructure :: Markup.Structure -> Html.Structure
 convertStructure structure =
   case structure of
