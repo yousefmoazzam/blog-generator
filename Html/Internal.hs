@@ -43,6 +43,9 @@ code_ = Structure . el "pre" . escape
 h_ :: Natural -> String -> Structure
 h_ num = Structure . el ("h" <> show num) . escape
 
+empty_ :: Structure
+empty_ = Structure ""
+
 render :: Html -> String
 render (Html str) = str
 
@@ -51,6 +54,12 @@ el tag content = "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
 
 getStructureString :: Structure -> String
 getStructureString (Structure str) = str
+
+concatStructures :: [Structure] -> Structure
+concatStructures [] = empty_
+concatStructures [first] = first
+concatStructures (first : second : rest) =
+  (first <> second) <> concatStructures rest
 
 escape :: String -> String
 escape =
