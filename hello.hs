@@ -3,25 +3,25 @@ import System.Directory
 import System.Environment
 
 main :: IO ()
-main =
-  getArgs >>= \args ->
-    case args of
-      -- Input from stdin, process contents, write to stdout
-      [] ->
-        getContents >>= \contents ->
-          pure (Convert.process "stdin" contents) >>= \processed ->
-            putStrLn processed
-      -- Open input, process contents, write to output
-      [first, second] ->
-        doesFileExist second >>= \doesExist ->
-          case doesExist of
-            False -> processInputWriteOutput first second
-            True ->
-              confirm >>= \confirmed ->
-                case confirmed of
-                  False -> pure ()
-                  True -> processInputWriteOutput first second
-      _ -> putStrLn programUsageText
+main = do
+  args <- getArgs
+  case args of
+    -- Input from stdin, process contents, write to stdout
+    [] -> do
+      contents <- getContents
+      let processed = Convert.process "stdin" contents
+      putStrLn processed
+    -- Open input, process contents, write to output
+    [first, second] -> do
+      doesExist <- doesFileExist second
+      case doesExist of
+        False -> processInputWriteOutput first second
+        True -> do
+          confirmed <- confirm
+          case confirmed of
+            False -> pure ()
+            True -> processInputWriteOutput first second
+    _ -> putStrLn programUsageText
 
 processInputWriteOutput :: FilePath -> FilePath -> IO ()
 processInputWriteOutput input output = do
