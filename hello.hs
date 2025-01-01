@@ -7,8 +7,11 @@ main =
   getArgs >>= \args ->
     case args of
       -- Open input, process contents, write to output
-      [first, second] ->
-        readFile first >>= \contents ->
-          pure
-            (Convert.process first contents)
-            >>= \processed -> writeFile second processed
+      [first, second] -> processInputWriteOutput first second
+
+processInputWriteOutput :: FilePath -> FilePath -> IO ()
+processInputWriteOutput input output =
+  readFile input >>= \contents ->
+    pure
+      (Convert.process input contents)
+      >>= \processed -> writeFile output processed
