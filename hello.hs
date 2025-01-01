@@ -30,16 +30,13 @@ processInputWriteOutput input output = do
   writeFile output processed
 
 confirm :: IO Bool
-confirm =
+confirm = do
   putStrLn "Are you sure? (y/n)"
-    *> getLine
-    >>= \answer ->
-      case answer of
-        "y" -> pure True
-        "n" -> pure False
-        _ ->
-          putStrLn "Invalid response. use y or n"
-            *> confirm
+  answer <- getLine
+  case answer of
+    "y" -> pure True
+    "n" -> pure False
+    _ -> putStrLn "Invalid response. use y or n" *> confirm
 
 programUsageText :: String
 programUsageText =
