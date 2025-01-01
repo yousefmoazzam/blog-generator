@@ -24,11 +24,10 @@ main =
       _ -> putStrLn programUsageText
 
 processInputWriteOutput :: FilePath -> FilePath -> IO ()
-processInputWriteOutput input output =
-  readFile input >>= \contents ->
-    pure
-      (Convert.process input contents)
-      >>= \processed -> writeFile output processed
+processInputWriteOutput input output = do
+  contents <- readFile input
+  let processed = Convert.process input contents
+  writeFile output processed
 
 confirm :: IO Bool
 confirm =
