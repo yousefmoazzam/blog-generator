@@ -10,5 +10,5 @@ main =
       [first, second] ->
         readFile first >>= \contents ->
           pure
-            (Convert.process "Some title" contents)
+            (Convert.process first contents)
             >>= \processed -> writeFile second processed
