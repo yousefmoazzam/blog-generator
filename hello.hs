@@ -21,6 +21,7 @@ main =
                 case confirmed of
                   False -> pure ()
                   True -> processInputWriteOutput first second
+      _ -> putStrLn programUsageText
 
 processInputWriteOutput :: FilePath -> FilePath -> IO ()
 processInputWriteOutput input output =
@@ -40,3 +41,9 @@ confirm =
         _ ->
           putStrLn "Invalid response. use y or n"
             *> confirm
+
+programUsageText :: String
+programUsageText =
+  "Program usage\n\
+  \<no args>: read input from stdin, write output to stdout\n\
+  \<input-filepath> <output-filepath>: read input from first arg, write output to second arg"
