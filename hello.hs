@@ -1,13 +1,14 @@
-import Html
+import Convert
+import System.Directory
+import System.Environment
 
-main = putStrLn (render myhtml)
-
-myhtml :: Html
-myhtml =
-  html_
-    "My page title"
-    ( h1_ "Some header"
-        <> ( p_ "Paragraph 1: Hello, world!"
-               <> p_ "Paragraph 2: Some other thing"
-           )
-    )
+main :: IO ()
+main =
+  getArgs >>= \args ->
+    case args of
+      -- Open input, process contents, write to output
+      [first, second] ->
+        readFile first >>= \contents ->
+          pure
+            (Convert.process "Some title" contents)
+            >>= \processed -> writeFile second processed
