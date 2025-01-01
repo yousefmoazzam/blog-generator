@@ -3,6 +3,9 @@ module Convert where
 import qualified Html
 import qualified Markup
 
+process :: Html.Title -> String -> String
+process title content = Html.render $ convert title $ Markup.parse content
+
 convert :: String -> Markup.Document -> Html.Html
 convert title doc = Html.html_ title (foldMap convertStructure doc)
 

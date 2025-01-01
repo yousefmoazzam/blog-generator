@@ -1,6 +1,7 @@
 module Markup
   ( Document,
     Structure (Heading, Paragraph, UnorderedList, OrderedList, CodeBlock),
+    parse,
   )
 where
 
