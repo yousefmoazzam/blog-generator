@@ -6,6 +6,11 @@ main :: IO ()
 main =
   getArgs >>= \args ->
     case args of
+      -- Input from stdin, process contents, write to stdout
+      [] ->
+        getContents >>= \contents ->
+          pure (Convert.process "stdin" contents) >>= \processed ->
+            putStrLn processed
       -- Open input, process contents, write to output
       [first, second] ->
         doesFileExist second >>= \doesExist ->
