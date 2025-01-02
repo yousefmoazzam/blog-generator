@@ -1,4 +1,4 @@
-module Markup
+module BlogGenerator.Markup
   ( Document,
     Structure (Heading, Paragraph, UnorderedList, OrderedList, CodeBlock),
     parse,

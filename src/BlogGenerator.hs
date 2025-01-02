@@ -1,4 +1,6 @@
-import Convert
+module BlogGenerator (main) where
+
+import BlogGenerator.Convert as Convert
 import System.Directory
 import System.Environment
 

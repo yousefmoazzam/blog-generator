@@ -1,4 +1,4 @@
-module Html.Internal where
+module BlogGenerator.Html.Internal where
 
 import GHC.Natural (Natural)
 

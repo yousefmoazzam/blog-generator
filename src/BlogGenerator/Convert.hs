@@ -1,7 +1,7 @@
-module Convert where
+module BlogGenerator.Convert where
 
-import qualified Html
-import qualified Markup
+import qualified BlogGenerator.Html as Html
+import qualified BlogGenerator.Markup as Markup
 
 process :: Html.Title -> String -> String
 process title content = Html.render $ convert title $ Markup.parse content
