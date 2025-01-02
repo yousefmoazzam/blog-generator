@@ -30,3 +30,13 @@ library
     BlogGenerator.Html
     BlogGenerator.Html.Internal
     BlogGenerator.Markup
+
+executable blog-generator-gen
+  import: common-settings
+  hs-source-dirs: app
+  main-is: Main.hs
+  build-depends:
+      base
+    , blog-generator
+  ghc-options:
+    -O
