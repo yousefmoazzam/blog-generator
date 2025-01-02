@@ -12,6 +12,8 @@ description:         This package provides a static blog generator
                      'Learn Haskell Blog Generator'. See
                      https://learn-haskell.blog/01-about.html for more
                      details.
+license:             BSD-3-Clause
+license-file:        LICENSE.txt
 extra-doc-files:
   README.md
 
