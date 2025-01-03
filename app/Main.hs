@@ -1,6 +1,7 @@
 module Main where
 
 import qualified BlogGenerator
+import Data.Maybe (fromMaybe)
 import Options.Applicative
 
 main :: IO ()
@@ -60,6 +61,12 @@ pOutputFile = fmap OutputFile parser
             <> metavar "FILE"
             <> help "Output file"
         )
+
+pSingleInput :: Parser SingleInput
+pSingleInput = fmap (fromMaybe Stdin) (optional pInputFile)
+
+pSingleOutput :: Parser SingleOutput
+pSingleOutput = fmap (fromMaybe Stdout) (optional pOutputFile)
 
 pConvertSingle :: Parser Options
 pConvertSingle = liftA2 ConvertSingle pInputFile pOutputFile
