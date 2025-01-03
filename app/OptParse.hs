@@ -111,3 +111,12 @@ pConvertDirCommand =
 pOptions :: Parser Options
 pOptions =
   subparser (pConvertSingleCommand <> pConvertDirCommand)
+
+opts :: ParserInfo Options
+opts =
+  info
+    (helper <*> pOptions)
+    ( fullDesc
+        <> header "blog-generator - a static blog generator"
+        <> progDesc "Convert markup files or directories to html"
+    )
