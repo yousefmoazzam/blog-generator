@@ -111,3 +111,7 @@ pConvertDirInfo =
 pConvertDirCommand :: Mod CommandFields Options
 pConvertDirCommand =
   command "convert-dir" pConvertDirInfo
+
+pOptions :: Parser Options
+pOptions =
+  subparser (pConvertSingleCommand <> pConvertDirCommand)
