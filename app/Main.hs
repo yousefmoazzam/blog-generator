@@ -63,3 +63,24 @@ pOutputFile = fmap OutputFile parser
 
 pConvertSingle :: Parser Options
 pConvertSingle = liftA2 ConvertSingle pInputFile pOutputFile
+
+pInputDir :: Parser FilePath
+pInputDir =
+  strOption
+    ( long "input"
+        <> short 'i'
+        <> metavar "DIR"
+        <> help "Input directory"
+    )
+
+pOutputDir :: Parser FilePath
+pOutputDir =
+  strOption
+    ( long "output"
+        <> short 'o'
+        <> metavar "DIR"
+        <> help "Output directory"
+    )
+
+pConvertDir :: Parser Options
+pConvertDir = liftA2 ConvertDir pInputDir pOutputDir
