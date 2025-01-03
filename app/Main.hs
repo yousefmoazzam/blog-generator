@@ -71,6 +71,16 @@ pSingleOutput = fmap (fromMaybe Stdout) (optional pOutputFile)
 pConvertSingle :: Parser Options
 pConvertSingle = liftA2 ConvertSingle pInputFile pOutputFile
 
+pConvertSingleInfo :: ParserInfo Options
+pConvertSingleInfo =
+  info
+    (helper <*> pConvertSingle)
+    (progDesc "Convert a single markup source to html")
+
+pConvertSingleCommand :: Mod CommandFields Options
+pConvertSingleCommand =
+  command "convert" pConvertSingleInfo
+
 pInputDir :: Parser FilePath
 pInputDir =
   strOption
