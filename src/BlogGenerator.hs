@@ -1,8 +1,10 @@
-module BlogGenerator (main) where
+module BlogGenerator (main, convertSingle) where
 
 import BlogGenerator.Convert as Convert
+import BlogGenerator.Html as Html
 import System.Directory
 import System.Environment
+import System.IO (Handle, hGetContents, hPutStrLn)
 
 main :: IO ()
 main = do
@@ -45,3 +47,8 @@ programUsageText =
   "Program usage\n\
   \<no args>: read input from stdin, write output to stdout\n\
   \<input-filepath> <output-filepath>: read input from first arg, write output to second arg"
+
+convertSingle :: Html.Title -> Handle -> Handle -> IO ()
+convertSingle title input output =
+  hGetContents input >>= \contents ->
+    hPutStrLn output (Convert.process title contents)
