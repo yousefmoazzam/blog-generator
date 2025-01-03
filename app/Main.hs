@@ -101,3 +101,13 @@ pOutputDir =
 
 pConvertDir :: Parser Options
 pConvertDir = liftA2 ConvertDir pInputDir pOutputDir
+
+pConvertDirInfo :: ParserInfo Options
+pConvertDirInfo =
+  info
+    (helper <*> pConvertDir)
+    (progDesc "Convert a directory of markup source files to html")
+
+pConvertDirCommand :: Mod CommandFields Options
+pConvertDirCommand =
+  command "convert-dir" pConvertDirInfo
