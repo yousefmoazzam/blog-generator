@@ -39,6 +39,8 @@ executable blog-generator-gen
   import: common-settings
   hs-source-dirs: app
   main-is: Main.hs
+  other-modules:
+    OptParse
   build-depends:
       base
     , optparse-applicative
