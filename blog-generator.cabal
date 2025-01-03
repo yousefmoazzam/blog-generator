@@ -41,6 +41,7 @@ executable blog-generator-gen
   main-is: Main.hs
   build-depends:
       base
+    , optparse-applicative
     , blog-generator
   ghc-options:
     -O
