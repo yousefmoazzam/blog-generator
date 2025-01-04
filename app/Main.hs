@@ -28,8 +28,12 @@ main =
                   doesFileExist outPath >>= \doesExist ->
                     ( if doesExist
                         then
-                          putStrLn "Output file already exists, exiting"
-                            *> exitFailure
+                          confirm >>= \confirmed ->
+                            if confirmed
+                              then openFile outPath WriteMode
+                              else
+                                putStrLn "Not overwriting existing output file, exiting"
+                                  *> exitFailure
                         else openFile outPath WriteMode
                     )
             )
@@ -41,3 +45,15 @@ main =
           inFilename = case input of
             OptParse.Stdin -> "stdin"
             OptParse.InputFile path -> path
+
+confirm :: IO Bool
+confirm =
+  putStrLn "Are you sure? (y/n)"
+    *> getLine
+    >>= \answer ->
+      case answer of
+        "y" -> pure True
+        "n" -> pure False
+        _ ->
+          putStrLn "Invalid response. use y or n"
+            *> confirm
