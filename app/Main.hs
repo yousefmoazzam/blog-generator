@@ -3,6 +3,8 @@ module Main where
 import qualified BlogGenerator
 import OptParse
 import Options.Applicative (execParser)
+import System.Directory (doesFileExist)
+import System.Directory.Internal.Prelude (exitFailure)
 import System.IO (IOMode (ReadMode, WriteMode), hClose, openFile, stdin, stdout)
 
 main :: IO ()
@@ -23,7 +25,13 @@ main =
                 OptParse.Stdout ->
                   pure System.IO.stdout
                 OptParse.OutputFile outPath ->
-                  openFile outPath WriteMode
+                  doesFileExist outPath >>= \doesExist ->
+                    ( if doesExist
+                        then
+                          putStrLn "Output file already exists, exiting"
+                            *> exitFailure
+                        else openFile outPath WriteMode
+                    )
             )
               >>= \outHandle ->
                 BlogGenerator.convertSingle inFilename inHandle outHandle
