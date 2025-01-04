@@ -4,7 +4,7 @@ import Data.Maybe (fromMaybe)
 import Options.Applicative
 
 data Options
-  = ConvertSingle SingleInput SingleOutput
+  = ConvertSingle SingleInput SingleOutput Bool
   | ConvertDir FilePath FilePath
   deriving (Show)
 
@@ -17,6 +17,14 @@ data SingleOutput
   = Stdout
   | OutputFile FilePath
   deriving (Show)
+
+pReplace :: Parser Bool
+pReplace =
+  switch
+    ( long "replace"
+        <> short 'r'
+        <> help "Silently overwrite output if it exists"
+    )
 
 inp :: Parser FilePath
 inp =
@@ -65,7 +73,7 @@ pSingleOutput :: Parser SingleOutput
 pSingleOutput = fmap (fromMaybe Stdout) (optional pOutputFile)
 
 pConvertSingle :: Parser Options
-pConvertSingle = liftA2 ConvertSingle pInputFile pOutputFile
+pConvertSingle = liftA3 ConvertSingle pInputFile pOutputFile pReplace
 
 pConvertSingleInfo :: ParserInfo Options
 pConvertSingleInfo =

@@ -13,7 +13,7 @@ main =
     case args of
       OptParse.ConvertDir _ _ ->
         putStrLn "todo"
-      OptParse.ConvertSingle input output ->
+      OptParse.ConvertSingle input output replace ->
         ( case input of
             OptParse.Stdin ->
               pure System.IO.stdin
@@ -28,12 +28,15 @@ main =
                   doesFileExist outPath >>= \doesExist ->
                     ( if doesExist
                         then
-                          confirm >>= \confirmed ->
-                            if confirmed
-                              then openFile outPath WriteMode
-                              else
-                                putStrLn "Not overwriting existing output file, exiting"
-                                  *> exitFailure
+                          if replace
+                            then openFile outPath WriteMode
+                            else
+                              confirm >>= \confirmed ->
+                                if confirmed
+                                  then openFile outPath WriteMode
+                                  else
+                                    putStrLn "Not overwriting existing output file, exiting"
+                                      *> exitFailure
                         else openFile outPath WriteMode
                     )
             )
