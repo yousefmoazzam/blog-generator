@@ -43,6 +43,7 @@ executable blog-generator-gen
     OptParse
   build-depends:
       base
+    , directory
     , optparse-applicative
     , blog-generator
   ghc-options:
