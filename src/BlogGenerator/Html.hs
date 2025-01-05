@@ -9,6 +9,12 @@ module BlogGenerator.Html
     ol_,
     code_,
     render,
+    Content,
+    txt_,
+    img_,
+    link_,
+    b_,
+    i_,
   )
 where
 
