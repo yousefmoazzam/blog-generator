@@ -46,8 +46,8 @@ parseLines context txts =
     -- Code block case
     ('>' : ' ' : line) : rest ->
       case context of
-        Just (CodeBlock lines) ->
-          parseLines (Just (CodeBlock (lines ++ [trim line]))) rest
+        Just (CodeBlock code) ->
+          parseLines (Just (CodeBlock (code ++ [trim line]))) rest
         _ -> maybe id (:) context (parseLines (Just (CodeBlock [trim line])) rest)
     -- Paragraph case
     currentLine : rest ->
