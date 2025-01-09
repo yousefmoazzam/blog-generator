@@ -31,6 +31,7 @@ library
   exposed-modules:
     BlogGenerator
     BlogGenerator.Convert
+    BlogGenerator.Directory
     BlogGenerator.Html
     BlogGenerator.Html.Internal
     BlogGenerator.Markup
