@@ -31,3 +31,15 @@ applyIoOnList func vals =
             pure (input, Right output)
         )
         (\e -> pure (input, Left $ displayException (e :: SomeException)))
+
+filterAndReportFailures :: [(a, Either String b)] -> IO [(a, b)]
+filterAndReportFailures vals =
+  mconcat (map process vals)
+  where
+    process (first, second) =
+      case second of
+        Left e ->
+          putStrLn ("IO error: " ++ e)
+            *> pure []
+        Right inner ->
+          pure [(first, inner)]
