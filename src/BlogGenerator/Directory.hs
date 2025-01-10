@@ -3,7 +3,10 @@ module BlogGenerator.Directory (buildIndex) where
 import BlogGenerator.Html as Html
 import BlogGenerator.Markup as Markup
 import Control.Exception (SomeException (..), catch, displayException)
+import Data.List (partition)
 import Data.Maybe (listToMaybe)
+import System.Directory (listDirectory)
+import System.FilePath (takeExtension, (</>))
 
 buildIndex :: [(FilePath, Markup.Document)] -> Html.Html
 buildIndex input =
@@ -20,6 +23,32 @@ buildIndex input =
       createLinkAndSummary (path, doc) =
         Html.p_ (Html.link_ path (Html.txt_ "")) <> summariseDoc doc
    in Html.html_ title (top <> foldMap createLinkAndSummary input)
+
+-- | Relevant directory content for application
+data DirContents
+  = DirContents
+  { -- | File paths and their content
+    dcFilesToProcess :: [(FilePath, String)],
+    -- | Other file paths, to be copied directly
+    dcFilesToCopy :: [FilePath]
+  }
+
+-- | Return directory content
+getDirFilesAndContent :: FilePath -> IO DirContents
+getDirFilesAndContent inputDir =
+  listDirectory inputDir >>= \filenames ->
+    pure
+      (map (inputDir </>) filenames)
+      >>= \files ->
+        let (txtFiles, otherFiles) = partition ((== ".txt") . takeExtension) files
+         in applyIoOnList readFile txtFiles
+              >>= filterAndReportFailures
+              >>= \txtFilesAndContent ->
+                pure $
+                  DirContents
+                    { dcFilesToProcess = txtFilesAndContent,
+                      dcFilesToCopy = otherFiles
+                    }
 
 applyIoOnList :: (a -> IO b) -> [a] -> IO [(a, Either String b)]
 applyIoOnList func vals =

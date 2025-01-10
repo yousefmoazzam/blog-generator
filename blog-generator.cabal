@@ -28,6 +28,7 @@ library
   build-depends:
       base
     , directory
+    , filepath
   exposed-modules:
     BlogGenerator
     BlogGenerator.Convert
