@@ -33,6 +33,7 @@ library
     BlogGenerator
     BlogGenerator.Convert
     BlogGenerator.Directory
+    BlogGenerator.Env
     BlogGenerator.Html
     BlogGenerator.Html.Internal
     BlogGenerator.Markup
