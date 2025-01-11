@@ -52,6 +52,18 @@ h_ num = Structure . el ("h" <> show num) . getContentString
 title_ :: String -> Structure
 title_ content = Structure $ el "title" content
 
+meta_ :: [(String, String)] -> Structure
+meta_ pairs =
+  Structure $
+    elAttr
+      "meta"
+      (unwords attrs)
+      (getStructureString empty_)
+  where
+    attrs = map generateAttrStr pairs
+    generateAttrStr (attr, val) =
+      attr <> "=" <> "\"" <> escape val <> "\""
+
 empty_ :: Structure
 empty_ = Structure ""
 

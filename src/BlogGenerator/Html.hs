@@ -5,6 +5,7 @@ module BlogGenerator.Html
     html_,
     h_,
     title_,
+    meta_,
     p_,
     ul_,
     ol_,
