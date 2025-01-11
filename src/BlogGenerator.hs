@@ -14,9 +14,9 @@ convertSingle title input output =
 process :: Html.Title -> String -> String
 process title content = Html.render $ Convert.convert title $ Markup.parse content
 
-confirm :: IO Bool
-confirm =
-  putStrLn "Are you sure? (y/n)"
+confirm :: String -> IO Bool
+confirm msg =
+  putStrLn msg
     *> getLine
     >>= \answer ->
       case answer of
@@ -24,4 +24,4 @@ confirm =
         "n" -> pure False
         _ ->
           putStrLn "Invalid response. use y or n"
-            *> confirm
+            *> confirm msg

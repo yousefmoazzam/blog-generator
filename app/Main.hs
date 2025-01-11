@@ -34,7 +34,7 @@ main =
                               if replace
                                 then openFile outPath WriteMode
                                 else
-                                  BlogGenerator.confirm >>= \confirmed ->
+                                  BlogGenerator.confirm "Output exists, overwrite it? (y/n)" >>= \confirmed ->
                                     if confirmed
                                       then openFile outPath WriteMode
                                       else
