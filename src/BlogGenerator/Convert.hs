@@ -3,9 +3,11 @@ module BlogGenerator.Convert where
 import qualified BlogGenerator.Html as Html
 import qualified BlogGenerator.Markup as Markup
 
+-- | Convert markup string to HTML string
 process :: Html.Title -> String -> String
 process title content = Html.render $ convert title $ Markup.parse content
 
+-- | Convert markup represented by `Markup.Document` to HTML represented by `Html.Html`
 convert :: String -> Markup.Document -> Html.Html
 convert title doc = Html.html_ title (foldMap convertStructure doc)
 
