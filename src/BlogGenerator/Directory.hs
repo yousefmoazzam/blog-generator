@@ -1,14 +1,17 @@
 module BlogGenerator.Directory (buildIndex) where
 
+import BlogGenerator (confirm)
 import BlogGenerator.Convert as Convert
 import BlogGenerator.Html as Html
 import BlogGenerator.Markup as Markup
 import Control.Exception (SomeException (..), catch, displayException)
-import Control.Monad (void)
+import Control.Monad (void, when)
 import Data.List (partition)
 import Data.Maybe (listToMaybe)
-import System.Directory (copyFile, listDirectory)
+import System.Directory (copyFile, createDirectory, doesDirectoryExist, listDirectory, removeDirectoryRecursive)
+import System.Exit (exitFailure)
 import System.FilePath (takeBaseName, takeExtension, takeFileName, (<.>), (</>))
+import System.IO (hPutStrLn, stderr)
 
 buildIndex :: [(FilePath, Markup.Document)] -> Html.Html
 buildIndex input =
@@ -115,3 +118,26 @@ writeFiles outputDir tuples =
   void (applyIoOnList writeFileContents tuples >>= filterAndReportFailures)
   where
     writeFileContents (fileName, contents) = writeFile (outputDir </> fileName) contents
+
+-- | Create output directory or terminate program if directory creation failed
+createOutputDirectoryOrExit :: FilePath -> IO ()
+createOutputDirectoryOrExit outputDir =
+  createOutputDirectory outputDir >>= \created ->
+    when (not created) (hPutStrLn stderr "Cancelled." *> exitFailure)
+
+-- | Create output directory.
+-- Return whether the directory was created or not.
+createOutputDirectory :: FilePath -> IO Bool
+createOutputDirectory dir = do
+  doesDirectoryExist dir >>= \dirExists ->
+    ( if dirExists
+        then
+          confirm "Output directory exists. Override?" >>= \override ->
+            when override (removeDirectoryRecursive dir)
+              *> pure override
+        else
+          pure True
+    )
+      >>= \create ->
+        when create (createDirectory dir)
+          *> pure create
