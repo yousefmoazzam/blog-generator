@@ -34,7 +34,7 @@ main =
                               if replace
                                 then openFile outPath WriteMode
                                 else
-                                  confirm >>= \confirmed ->
+                                  BlogGenerator.confirm >>= \confirmed ->
                                     if confirmed
                                       then openFile outPath WriteMode
                                       else
@@ -52,15 +52,3 @@ main =
           inFilename = case input of
             OptParse.Stdin -> "stdin"
             OptParse.InputFile path -> path
-
-confirm :: IO Bool
-confirm =
-  putStrLn "Are you sure? (y/n)"
-    *> getLine
-    >>= \answer ->
-      case answer of
-        "y" -> pure True
-        "n" -> pure False
-        _ ->
-          putStrLn "Invalid response. use y or n"
-            *> confirm
