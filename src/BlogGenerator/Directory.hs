@@ -4,10 +4,11 @@ import BlogGenerator.Convert as Convert
 import BlogGenerator.Html as Html
 import BlogGenerator.Markup as Markup
 import Control.Exception (SomeException (..), catch, displayException)
+import Control.Monad (void)
 import Data.List (partition)
 import Data.Maybe (listToMaybe)
-import System.Directory (listDirectory)
-import System.FilePath (takeBaseName, takeExtension, (<.>), (</>))
+import System.Directory (copyFile, listDirectory)
+import System.FilePath (takeBaseName, takeExtension, takeFileName, (<.>), (</>))
 
 buildIndex :: [(FilePath, Markup.Document)] -> Html.Html
 buildIndex input =
@@ -98,3 +99,19 @@ toOutputMarkupFile (path, contents) = (path, Markup.parse contents)
 -- but the `Markup.Document` has been converted to a `Html.Html`
 convertFile :: (FilePath, Markup.Document) -> (FilePath, Html.Html)
 convertFile (path, doc) = (path, Convert.convert (takeBaseName path) doc)
+
+-- | Copy files to directory (assuming list contains filepaths, not filenames), recording
+-- errors to stderr
+copyFiles :: FilePath -> [FilePath] -> IO ()
+copyFiles outputDir files =
+  void (applyIoOnList copyFromTo files >>= filterAndReportFailures)
+  where
+    copyFromTo path = copyFile path (outputDir </> takeFileName path)
+
+-- | Write files to directory (assuming list of tuples contain filenames, not filepaths),
+-- recording errors to stderr
+writeFiles :: FilePath -> [(FilePath, String)] -> IO ()
+writeFiles outputDir tuples =
+  void (applyIoOnList writeFileContents tuples >>= filterAndReportFailures)
+  where
+    writeFileContents (fileName, contents) = writeFile (outputDir </> fileName) contents
