@@ -1,4 +1,4 @@
-module BlogGenerator.Convert where
+module BlogGenerator.Convert (convert) where
 
 import qualified BlogGenerator.Html as Html
 import qualified BlogGenerator.Markup as Markup
