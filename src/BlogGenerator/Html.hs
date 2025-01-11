@@ -13,6 +13,7 @@ module BlogGenerator.Html
     Content,
     txt_,
     img_,
+    stylesheet_,
     link_,
     b_,
     i_,

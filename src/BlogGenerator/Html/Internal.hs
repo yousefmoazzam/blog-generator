@@ -79,6 +79,16 @@ escape =
 txt_ :: String -> Content
 txt_ = Content . escape
 
+stylesheet_ :: FilePath -> Content
+stylesheet_ path =
+  Content $
+    elAttr
+      "link"
+      ("href=\"" <> escape path <> "\"" <> " " <> fixedAttrs)
+      ""
+  where
+    fixedAttrs = unwords ["rel=\"stylesheet\"", "type=\"text/css\""]
+
 link_ :: FilePath -> Content -> Content
 link_ path content =
   Content $
