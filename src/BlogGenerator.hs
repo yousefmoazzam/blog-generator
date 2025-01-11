@@ -2,6 +2,7 @@ module BlogGenerator (main, convertSingle) where
 
 import BlogGenerator.Convert as Convert
 import BlogGenerator.Html as Html
+import BlogGenerator.Markup as Markup
 import System.Directory
 import System.Environment
 import System.IO (Handle, hGetContents, hPutStrLn)
@@ -13,7 +14,7 @@ main = do
     -- Input from stdin, process contents, write to stdout
     [] -> do
       contents <- getContents
-      let processed = Convert.process "stdin" contents
+      let processed = process "stdin" contents
       putStrLn processed
     -- Open input, process contents, write to output
     [first, second] -> do
@@ -30,7 +31,7 @@ main = do
 processInputWriteOutput :: FilePath -> FilePath -> IO ()
 processInputWriteOutput input output = do
   contents <- readFile input
-  let processed = Convert.process input contents
+  let processed = process input contents
   writeFile output processed
 
 confirm :: IO Bool
@@ -51,4 +52,8 @@ programUsageText =
 convertSingle :: Html.Title -> Handle -> Handle -> IO ()
 convertSingle title input output =
   hGetContents input >>= \contents ->
-    hPutStrLn output (Convert.process title contents)
+    hPutStrLn output (process title contents)
+
+-- | Convert markup string to HTML string
+process :: Html.Title -> String -> String
+process title content = Html.render $ Convert.convert title $ Markup.parse content
