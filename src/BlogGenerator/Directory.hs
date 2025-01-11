@@ -1,12 +1,13 @@
 module BlogGenerator.Directory (buildIndex) where
 
+import BlogGenerator.Convert as Convert
 import BlogGenerator.Html as Html
 import BlogGenerator.Markup as Markup
 import Control.Exception (SomeException (..), catch, displayException)
 import Data.List (partition)
 import Data.Maybe (listToMaybe)
 import System.Directory (listDirectory)
-import System.FilePath (takeExtension, (</>))
+import System.FilePath (takeBaseName, takeExtension, (<.>), (</>))
 
 buildIndex :: [(FilePath, Markup.Document)] -> Html.Html
 buildIndex input =
@@ -72,3 +73,28 @@ filterAndReportFailures vals =
             *> pure []
         Right inner ->
           pure [(first, inner)]
+
+-- | Transform a list of tuples containing a markup source filepath and string contents to a
+-- list of tuples containing the filename of the output HTML file, and the string contents of
+-- the output HTML file
+txtsToRenderedHtml :: [(FilePath, String)] -> [(FilePath, String)]
+txtsToRenderedHtml tuples =
+  indexInfo : map (transformBoth . convertFile) markupDocs
+  where
+    indexFileName = "index.html"
+    markupDocs = map toOutputMarkupFile tuples
+    indexInfo = (indexFileName, Html.render . buildIndex $ markupDocs)
+    transformBoth (path, html) =
+      (takeBaseName path <.> "html", Html.render html)
+
+-- | Transform a tuple containing a markup source filepath and string contents to a
+-- tuple containing the same markup source filepath, but the string contents has been
+-- converted to a `Markup.Document`
+toOutputMarkupFile :: (FilePath, String) -> (FilePath, Markup.Document)
+toOutputMarkupFile (path, contents) = (path, Markup.parse contents)
+
+-- | Transform a tuple containing a markup source filepath and a `Markup.document`
+-- representation of the contents to a tuple containing the same markup source filepath,
+-- but the `Markup.Document` has been converted to a `Html.Html`
+convertFile :: (FilePath, Markup.Document) -> (FilePath, Html.Html)
+convertFile (path, doc) = (path, Convert.convert (takeBaseName path) doc)
