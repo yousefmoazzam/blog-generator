@@ -52,21 +52,6 @@ code_ = Structure . el "pre" . escape
 h_ :: Natural -> Content -> Structure
 h_ num = Structure . el ("h" <> show num) . getContentString
 
-title_ :: String -> Head
-title_ content = Head $ el "title" content
-
-meta_ :: [(String, String)] -> Head
-meta_ pairs =
-  Head $
-    elAttr
-      "meta"
-      (unwords attrs)
-      (getStructureString empty_)
-  where
-    attrs = map generateAttrStr pairs
-    generateAttrStr (attr, val) =
-      attr <> "=" <> "\"" <> escape val <> "\""
-
 empty_ :: Structure
 empty_ = Structure ""
 
@@ -93,16 +78,6 @@ escape =
 
 txt_ :: String -> Content
 txt_ = Content . escape
-
-stylesheet_ :: FilePath -> Head
-stylesheet_ path =
-  Head $
-    elAttr
-      "link"
-      ("href=\"" <> escape path <> "\"" <> " " <> fixedAttrs)
-      ""
-  where
-    fixedAttrs = unwords ["rel=\"stylesheet\"", "type=\"text/css\""]
 
 link_ :: FilePath -> Content -> Content
 link_ path content =
@@ -146,3 +121,28 @@ instance Monoid Head where
 
 getHeadString :: Head -> String
 getHeadString (Head str) = str
+
+title_ :: String -> Head
+title_ content = Head $ el "title" content
+
+meta_ :: [(String, String)] -> Head
+meta_ pairs =
+  Head $
+    elAttr
+      "meta"
+      (unwords attrs)
+      (getStructureString empty_)
+  where
+    attrs = map generateAttrStr pairs
+    generateAttrStr (attr, val) =
+      attr <> "=" <> "\"" <> escape val <> "\""
+
+stylesheet_ :: FilePath -> Head
+stylesheet_ path =
+  Head $
+    elAttr
+      "link"
+      ("href=\"" <> escape path <> "\"" <> " " <> fixedAttrs)
+      ""
+  where
+    fixedAttrs = unwords ["rel=\"stylesheet\"", "type=\"text/css\""]
