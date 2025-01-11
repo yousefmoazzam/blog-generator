@@ -8,6 +8,9 @@ newtype Structure = Structure String
 
 newtype Content = Content String
 
+-- | Represents tags that can go in `<head>`
+newtype Head = Head String
+
 instance Semigroup Structure where
   (Structure a) <> (Structure b) = Structure (a <> b)
 
@@ -134,3 +137,12 @@ elAttr tag attrs content =
 
 getContentString :: Content -> String
 getContentString (Content str) = str
+
+instance Semigroup Head where
+  (Head a) <> (Head b) = Head (a <> b)
+
+instance Monoid Head where
+  mempty = Head ""
+
+getHeadString :: Head -> String
+getHeadString (Head str) = str
