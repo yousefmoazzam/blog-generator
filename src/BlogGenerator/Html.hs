@@ -4,6 +4,7 @@ module BlogGenerator.Html
     Structure,
     html_,
     h_,
+    title_,
     p_,
     ul_,
     ol_,

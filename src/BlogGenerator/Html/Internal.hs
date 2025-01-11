@@ -21,8 +21,9 @@ html_ title bodyStructure =
   Html
     ( el
         "html"
-        ( el "head" (el "title" (escape title))
-            <> el "body" (getStructureString bodyStructure)
+        ( el "head" $
+            getStructureString (title_ (escape title))
+              <> el "body" (getStructureString bodyStructure)
         )
     )
 
@@ -47,6 +48,9 @@ code_ = Structure . el "pre" . escape
 
 h_ :: Natural -> Content -> Structure
 h_ num = Structure . el ("h" <> show num) . getContentString
+
+title_ :: String -> Structure
+title_ content = Structure $ el "title" content
 
 empty_ :: Structure
 empty_ = Structure ""
