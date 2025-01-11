@@ -11,6 +11,7 @@ import Numeric.Natural
 type Document =
   [Structure]
 
+-- | The different kinds of markup content supported
 data Structure
   = Heading Natural String
   | Paragraph String
@@ -19,6 +20,7 @@ data Structure
   | CodeBlock [String]
   deriving (Show)
 
+-- | Parse markup string to list of `Structure` variants
 parse :: String -> Document
 parse = parseLines Nothing . lines
 
