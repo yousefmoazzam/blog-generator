@@ -25,7 +25,7 @@ html_ title bodyStructure =
     ( el
         "html"
         ( el "head" $
-            getStructureString (title_ (escape title))
+            getHeadString (title_ (escape title))
               <> el "body" (getStructureString bodyStructure)
         )
     )
@@ -52,12 +52,12 @@ code_ = Structure . el "pre" . escape
 h_ :: Natural -> Content -> Structure
 h_ num = Structure . el ("h" <> show num) . getContentString
 
-title_ :: String -> Structure
-title_ content = Structure $ el "title" content
+title_ :: String -> Head
+title_ content = Head $ el "title" content
 
-meta_ :: [(String, String)] -> Structure
+meta_ :: [(String, String)] -> Head
 meta_ pairs =
-  Structure $
+  Head $
     elAttr
       "meta"
       (unwords attrs)
@@ -94,9 +94,9 @@ escape =
 txt_ :: String -> Content
 txt_ = Content . escape
 
-stylesheet_ :: FilePath -> Content
+stylesheet_ :: FilePath -> Head
 stylesheet_ path =
-  Content $
+  Head $
     elAttr
       "link"
       ("href=\"" <> escape path <> "\"" <> " " <> fixedAttrs)
