@@ -1,4 +1,4 @@
-module BlogGenerator.Env (Env, defaultEnv) where
+module BlogGenerator.Env (Env (..), defaultEnv) where
 
 data Env
   = Env

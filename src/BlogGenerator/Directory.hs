@@ -30,7 +30,7 @@ convertDirectory inputDir outputDir env =
 
 buildIndex :: [(FilePath, Markup.Document)] -> Env.Env -> Html.Html
 buildIndex input env =
-  let title = "Index"
+  let title = Env.eBlogName env
       top = Html.h_ 1 (Html.txt_ title)
       summariseDoc structures =
         case listToMaybe structures of
