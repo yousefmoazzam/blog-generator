@@ -19,13 +19,13 @@ instance Monoid Structure where
 
 type Title = String
 
-html_ :: Title -> Structure -> Html
-html_ title bodyStructure =
+html_ :: Head -> Structure -> Html
+html_ headVal bodyStructure =
   Html
     ( el
         "html"
         ( el "head" $
-            getHeadString (title_ (escape title))
+            getHeadString headVal
               <> el "body" (getStructureString bodyStructure)
         )
     )

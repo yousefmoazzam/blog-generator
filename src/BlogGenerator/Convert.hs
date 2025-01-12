@@ -5,7 +5,7 @@ import qualified BlogGenerator.Markup as Markup
 
 -- | Convert markup represented by `Markup.Document` to HTML represented by `Html.Html`
 convert :: String -> Markup.Document -> Html.Html
-convert title doc = Html.html_ title (foldMap convertStructure doc)
+convert title doc = Html.html_ (Html.title_ title) (foldMap convertStructure doc)
 
 convertStructure :: Markup.Structure -> Html.Structure
 convertStructure structure =
