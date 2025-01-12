@@ -6,7 +6,7 @@ import Options.Applicative
 
 data Options
   = ConvertSingle SingleInput SingleOutput Bool
-  | ConvertDir FilePath FilePath
+  | ConvertDir FilePath FilePath Env
   deriving (Show)
 
 data SingleInput
@@ -125,7 +125,7 @@ pEnv :: Parser Env
 pEnv = liftA2 Env pBlogName pStyleSheet
 
 pConvertDir :: Parser Options
-pConvertDir = liftA2 ConvertDir pInputDir pOutputDir
+pConvertDir = liftA3 ConvertDir pInputDir pOutputDir pEnv
 
 pConvertDirInfo :: ParserInfo Options
 pConvertDirInfo =

@@ -1,4 +1,4 @@
-module BlogGenerator.Env (Env (..), defaultEnv) where
+module BlogGenerator.Env (Env (..)) where
 
 data Env
   = Env
@@ -6,6 +6,3 @@ data Env
     eStylesheetPath :: FilePath
   }
   deriving (Show)
-
-defaultEnv :: Env
-defaultEnv = Env "Test Blog" "style.css"
