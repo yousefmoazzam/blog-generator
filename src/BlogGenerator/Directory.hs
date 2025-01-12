@@ -1,4 +1,4 @@
-module BlogGenerator.Directory (buildIndex) where
+module BlogGenerator.Directory (buildIndex, convertDirectory) where
 
 import BlogGenerator (confirm)
 import BlogGenerator.Convert as Convert
@@ -12,6 +12,20 @@ import System.Directory (copyFile, createDirectory, doesDirectoryExist, listDire
 import System.Exit (exitFailure)
 import System.FilePath (takeBaseName, takeExtension, takeFileName, (<.>), (</>))
 import System.IO (hPutStrLn, stderr)
+
+-- | Copy files from one directory to another, converting '.txt' files to
+-- '.html' files in the process. Records unsuccessful reads and writes to
+-- stderr.
+--
+-- May throw an exception on output directory creation.
+convertDirectory :: FilePath -> FilePath -> IO ()
+convertDirectory inputDir outputDir =
+  getDirFilesAndContent inputDir >>= \dirContents ->
+    createOutputDirectoryOrExit outputDir
+      *> copyFiles outputDir (dcFilesToCopy dirContents)
+      *> let outputHtmls = txtsToRenderedHtml (dcFilesToProcess dirContents)
+          in writeFiles outputDir outputHtmls
+               *> putStrLn "Done"
 
 buildIndex :: [(FilePath, Markup.Document)] -> Html.Html
 buildIndex input =
