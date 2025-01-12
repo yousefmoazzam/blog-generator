@@ -42,7 +42,9 @@ buildIndex input env =
               _ -> Html.h_ 2 (Html.txt_ "")
       createLinkAndSummary (path, doc) =
         Html.p_ (Html.link_ path (Html.txt_ "")) <> summariseDoc doc
-   in Html.html_ (Html.title_ title <> Html.stylesheet_ (Env.eStylesheetPath env)) (top <> foldMap createLinkAndSummary input)
+      headContent = Html.title_ title <> Html.stylesheet_ (Env.eStylesheetPath env)
+      bodyContent = top <> foldMap createLinkAndSummary input
+   in Html.html_ headContent bodyContent
 
 -- | Relevant directory content for application
 data DirContents
