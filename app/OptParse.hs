@@ -1,5 +1,6 @@
 module OptParse where
 
+import BlogGenerator.Env (Env (Env))
 import Data.Maybe (fromMaybe)
 import Options.Applicative
 
@@ -102,6 +103,26 @@ pOutputDir =
         <> metavar "DIR"
         <> help "Output directory"
     )
+
+pBlogName :: Parser String
+pBlogName =
+  strOption
+    ( long "name"
+        <> short 'n'
+        <> help "Name of generated blog"
+    )
+
+pStyleSheet :: Parser FilePath
+pStyleSheet =
+  strOption
+    ( long "stylesheet"
+        <> short 's'
+        <> metavar "FILE"
+        <> help "Stylesheet/CSS file to link in index page"
+    )
+
+pEnv :: Parser Env
+pEnv = liftA2 Env pBlogName pStyleSheet
 
 pConvertDir :: Parser Options
 pConvertDir = liftA2 ConvertDir pInputDir pOutputDir
