@@ -1,6 +1,7 @@
 module Main where
 
 import qualified BlogGenerator
+import BlogGenerator.Directory (convertDirectory)
 import OptParse
 import Options.Applicative (execParser)
 import System.Directory (doesFileExist)
@@ -11,8 +12,8 @@ main :: IO ()
 main =
   execParser OptParse.opts >>= \args ->
     case args of
-      OptParse.ConvertDir _ _ ->
-        putStrLn "todo"
+      OptParse.ConvertDir inDir outDir ->
+        convertDirectory inDir outDir
       OptParse.ConvertSingle input output replace ->
         bracket
           ( case input of
