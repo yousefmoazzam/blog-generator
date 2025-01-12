@@ -2,6 +2,7 @@ module BlogGenerator.Directory (buildIndex, convertDirectory) where
 
 import BlogGenerator (confirm)
 import BlogGenerator.Convert as Convert
+import BlogGenerator.Env as Env
 import BlogGenerator.Html as Html
 import BlogGenerator.Markup as Markup
 import Control.Exception (SomeException (..), catch, displayException)
@@ -18,17 +19,17 @@ import System.IO (hPutStrLn, stderr)
 -- stderr.
 --
 -- May throw an exception on output directory creation.
-convertDirectory :: FilePath -> FilePath -> IO ()
-convertDirectory inputDir outputDir =
+convertDirectory :: FilePath -> FilePath -> Env.Env -> IO ()
+convertDirectory inputDir outputDir env =
   getDirFilesAndContent inputDir >>= \dirContents ->
     createOutputDirectoryOrExit outputDir
       *> copyFiles outputDir (dcFilesToCopy dirContents)
-      *> let outputHtmls = txtsToRenderedHtml (dcFilesToProcess dirContents)
+      *> let outputHtmls = txtsToRenderedHtml (dcFilesToProcess dirContents) env
           in writeFiles outputDir outputHtmls
                *> putStrLn "Done"
 
-buildIndex :: [(FilePath, Markup.Document)] -> Html.Html
-buildIndex input =
+buildIndex :: [(FilePath, Markup.Document)] -> Env.Env -> Html.Html
+buildIndex input env =
   let title = "Index"
       top = Html.h_ 1 (Html.txt_ title)
       summariseDoc structures =
@@ -95,13 +96,13 @@ filterAndReportFailures vals =
 -- | Transform a list of tuples containing a markup source filepath and string contents to a
 -- list of tuples containing the filename of the output HTML file, and the string contents of
 -- the output HTML file
-txtsToRenderedHtml :: [(FilePath, String)] -> [(FilePath, String)]
-txtsToRenderedHtml tuples =
+txtsToRenderedHtml :: [(FilePath, String)] -> Env.Env -> [(FilePath, String)]
+txtsToRenderedHtml tuples env =
   indexInfo : map (transformBoth . convertFile) markupDocs
   where
     indexFileName = "index.html"
     markupDocs = map toOutputMarkupFile tuples
-    indexInfo = (indexFileName, Html.render . buildIndex $ markupDocs)
+    indexInfo = (indexFileName, Html.render $ buildIndex markupDocs env)
     transformBoth (path, html) =
       (takeBaseName path <.> "html", Html.render html)
 

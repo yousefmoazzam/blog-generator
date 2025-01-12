@@ -2,6 +2,7 @@ module Main where
 
 import qualified BlogGenerator
 import BlogGenerator.Directory (convertDirectory)
+import BlogGenerator.Env (defaultEnv)
 import OptParse
 import Options.Applicative (execParser)
 import System.Directory (doesFileExist)
@@ -13,7 +14,7 @@ main =
   execParser OptParse.opts >>= \args ->
     case args of
       OptParse.ConvertDir inDir outDir ->
-        convertDirectory inDir outDir
+        convertDirectory inDir outDir defaultEnv
       OptParse.ConvertSingle input output replace ->
         bracket
           ( case input of
