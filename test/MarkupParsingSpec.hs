@@ -24,6 +24,15 @@ spec =
         )
 
       it
+        "Multi-line string with only one newline char between parses to single paragraph"
+        ( let lineOne = "Some text in line one"
+              lineTwo = "and more text in line two."
+           in shouldBe
+                (parse $ lineOne ++ "\n" ++ lineTwo)
+                [Paragraph $ lineOne ++ " " ++ lineTwo]
+        )
+
+      it
         "Heading markup parses to heading variant with size 1"
         ( let str = "Some Heading"
            in shouldBe
