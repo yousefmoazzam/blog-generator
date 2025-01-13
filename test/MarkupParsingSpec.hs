@@ -56,3 +56,12 @@ spec =
                 (parse $ "- " ++ itemOne ++ "\n- " ++ itemTwo)
                 [UnorderedList [itemOne, itemTwo]]
         )
+
+      it
+        "Ordered list markup parses to ordered list variant"
+        ( let itemOne = "Item 1"
+              itemTwo = "Item 2"
+           in shouldBe
+                (parse $ "# " ++ itemOne ++ "\n# " ++ itemTwo)
+                [OrderedList [itemOne, itemTwo]]
+        )
