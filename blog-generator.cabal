@@ -51,3 +51,19 @@ executable blog-generator-gen
     , blog-generator
   ghc-options:
     -O
+
+test-suite blog-generator-gen-test
+  import: common-settings
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  main-is: Spec.hs
+  build-depends:
+      base
+    , hspec
+    , hspec-discover
+    , raw-strings-qq
+    , blog-generator
+  ghc-options:
+    -O -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+    hspec-discover:hspec-discover
