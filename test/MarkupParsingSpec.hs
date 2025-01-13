@@ -7,13 +7,15 @@ spec :: Spec
 spec =
   describe
     "Markup parsing tests"
-    $ it
-      "Empty string parses to empty doc"
-      ( shouldBe
-          (parse "")
-          []
-      )
-      *> it
+    $ do
+      it
+        "Empty string parses to empty doc"
+        ( shouldBe
+            (parse "")
+            []
+        )
+
+      it
         "Paragraph markup parses to paragraph variant"
         ( let str = "Hello world!"
            in shouldBe
