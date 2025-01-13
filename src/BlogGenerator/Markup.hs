@@ -18,7 +18,7 @@ data Structure
   | UnorderedList [String]
   | OrderedList [String]
   | CodeBlock [String]
-  deriving (Show)
+  deriving (Eq, Show)
 
 -- | Parse markup string to list of `Structure` variants
 parse :: String -> Document
