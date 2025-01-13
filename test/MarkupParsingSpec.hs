@@ -22,3 +22,19 @@ spec =
                 (parse str)
                 [Paragraph str]
         )
+
+      it
+        "Heading markup parses to heading variant with size 1"
+        ( let str = "Some Heading"
+           in shouldBe
+                (parse $ "* " ++ str)
+                [Heading 1 str]
+        )
+
+      it
+        "Code markup parses to code block variant"
+        ( let str = "main = putStrLn \"hello world!\""
+           in shouldBe
+                (parse $ "> " ++ str)
+                [CodeBlock [str]]
+        )
