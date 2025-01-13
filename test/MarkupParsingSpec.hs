@@ -47,3 +47,12 @@ spec =
                 (parse $ "> " ++ str)
                 [CodeBlock [str]]
         )
+
+      it
+        "Unordered list markup parses to unordered list variant"
+        ( let itemOne = "Item 1"
+              itemTwo = "Item 2"
+           in shouldBe
+                (parse $ "- " ++ itemOne ++ "\n- " ++ itemTwo)
+                [UnorderedList [itemOne, itemTwo]]
+        )
