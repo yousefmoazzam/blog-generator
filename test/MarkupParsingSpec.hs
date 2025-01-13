@@ -13,3 +13,10 @@ spec =
           (parse "")
           []
       )
+      *> it
+        "Paragraph markup parses to paragraph variant"
+        ( let str = "Hello world!"
+           in shouldBe
+                (parse str)
+                [Paragraph str]
+        )
