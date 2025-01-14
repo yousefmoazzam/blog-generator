@@ -8,7 +8,7 @@ newtype Structure = Structure String
 
 newtype Content = Content String
 
--- | Represents tags that can go in `<head>`
+-- | Represents tags that can go in @\<head\>@
 newtype Head = Head String
 
 instance Semigroup Structure where
