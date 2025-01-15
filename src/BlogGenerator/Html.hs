@@ -2,6 +2,7 @@ module BlogGenerator.Html
   ( Html,
     Title,
     Structure,
+    Head,
     html_,
     h_,
     title_,
